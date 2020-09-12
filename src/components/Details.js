@@ -2,18 +2,23 @@ import React from 'react'
 import { Link } from 'gatsby'
 import { getCurrentUser } from '../utils/auth'
 
-const Home = () => {
+const Details = () => {
   const user = getCurrentUser()
   console.log('user:', user)
   return (
     <div>
       <h1>Profile Details</h1>
-      <p>Email: {user.email}</p>
-      <p>Phone: {user.phone_number}</p>
       <p>Username: {user.username}</p>
+      <p>Email: {user.email}</p>
+      <p>Bank Name: {user.given_name}</p>
+      <p>Bank Title/Role: {user.nickname}</p>
+      <p>City: {user.address}</p>
+      <p>State: {user.locale}</p>
+      <p>Seminar Dates: {user.middle_name}</p>
+
       <Link to="/app/home">Home</Link>
     </div>
   )
 }
 
-export default Home
+export default Details
