@@ -4,14 +4,8 @@ import { Link } from 'gatsby'
 import Layout from '../components/layout'
 
 import Amplify from 'aws-amplify'
-import config from '../aws-exports'
-Amplify.configure({
-  Auth: {
-    region: 'us-east-2',
-    userPoolId: 'us-east-2_Av86Avjuu',
-    userPoolWebClientId: '3s5g79k9gnnk1m506cllemc5cg',
-  },
-})
+import config from '../awsconfig'
+Amplify.configure(config)
 
 const IndexPage = () => (
   <Layout>

@@ -3,9 +3,10 @@ import { Link } from 'gatsby'
 
 import { navigate } from '@reach/router'
 
-import { logout, isLoggedIn } from "../utils/auth"
+import { logout, isLoggedIn } from '../utils/auth'
 import { Auth } from 'aws-amplify'
-
+import { getCurrentUser } from '../utils/auth'
+const user = getCurrentUser()
 const Header = ({ siteTitle }) => (
   <div
     style={{
@@ -21,23 +22,25 @@ const Header = ({ siteTitle }) => (
       }}
     >
       <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={styles.headerTitle}
-        >
+        <Link to="/" style={styles.headerTitle}>
           {siteTitle}
         </Link>
       </h1>
-      {
-        isLoggedIn() && (
+      {isLoggedIn() && (
+        <>
           <p
-            onClick={
-              () => Auth.signOut().then(logout(() => navigate('/app/login'))).catch(err => console.log('eror:', err))
+            onClick={() =>
+              Auth.signOut()
+                .then(logout(() => navigate('/app/login')))
+                .catch(err => console.log('eror:', err))
             }
             style={styles.link}
-          >Sign Out</p>
-        )
-      }
+          >
+            Sign Out
+          </p>
+          <p>Hello {user.username}</p>
+        </>
+      )}
     </div>
   </div>
 )
@@ -50,8 +53,8 @@ const styles = {
   link: {
     cursor: 'pointer',
     color: 'white',
-    textDecoration: 'underline'
-  }
+    textDecoration: 'underline',
+  },
 }
 
 export default Header

@@ -15,6 +15,7 @@ const Details = () => {
       <p>City: {user.address}</p>
       <p>State: {user.locale}</p>
       <p>Seminar Dates: {user.middle_name}</p>
+      <p>ID: {user.sub}</p>
 
       <Link to="/app/home">Home</Link>
     </div>
