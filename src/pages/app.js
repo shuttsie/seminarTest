@@ -1,18 +1,21 @@
-import React from "react"
-import { Router } from "@reach/router"
-import Layout from "../components/layout"
-import Details from "../components/Details"
-import Home from "../components/Home"
-import Login from "../components/Login"
-import SignUp from "../components/SignUp"
-import PrivateRoute from "../components/PrivateRoute"
-
+import React from 'react'
+import { Router } from '@reach/router'
+import Layout from '../components/layout'
+import Details from '../components/Details'
+import Notes from '../components/Notes'
+import Home from '../components/Home'
+import Chat from '../components/Chat'
+import Login from '../components/Login'
+import SignUp from '../components/SignUp'
+import PrivateRoute from '../components/PrivateRoute'
 
 const App = () => (
   <Layout>
     <Router>
       <PrivateRoute path="/app/home" component={Home} />
       <PrivateRoute path="/app/profile" component={Details} />
+      <Notes path="/app/notes" />
+      <Chat path="/app/chat" />
       <Login path="/app/login" />
       <SignUp path="/app/signup" />
     </Router>
