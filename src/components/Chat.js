@@ -1,94 +1,170 @@
-import React, { useEffect, useReducer } from 'react'
-import { Auth } from 'aws-amplify'
-import { DataStore, Predicates } from '@aws-amplify/datastore'
-import { Chatty } from '../models'
-import moment from 'moment'
+import React from 'react'
+import { Link } from 'gatsby'
+import { API, graphqlOperation, Auth } from 'aws-amplify'
+import { getCurrentUser } from '../utils/auth'
+import { createChat, deleteChat, updateChat } from '../graphql/mutations'
+import { listChats } from '../graphql/queries'
+import {
+  onCreateChat,
+  onDeleteChat,
+  onUpdateChat,
+} from '../graphql/subscriptions'
 
-const initialState = {
-  username: '',
-  messages: [],
-  message: '',
-}
+const user = getCurrentUser()
 
-function reducer(state, action) {
-  switch (action.type) {
-    case 'setUser':
-      return { ...state, username: action.username }
-    case 'set':
-      return { ...state, messages: action.messages }
-    case 'add':
-      return { ...state, messages: [...state.messages, action.message] }
-    case 'updateInput':
-      return { ...state, [action.inputValue]: action.value }
-    default:
-      new Error()
+class Chat extends React.Component {
+  state = {
+    id: '',
+    chat: '',
+    chats: [],
   }
-}
 
-async function getMessages(dispatch) {
-  try {
-    const messagesData = await DataStore.query(Chatty, Predicates.ALL)
-    const sorted = [...messagesData].sort(
-      (a, b) => -a.createdAt.localeCompare(b.createdAt)
-    )
-    dispatch({ type: 'set', messages: sorted })
-  } catch (err) {
-    console.log('error fetching messages...', err)
+  getUser = async () => {
+    const user = await Auth.currentAuthenticatedUser()
+    return user
   }
-}
 
-async function createMessage(state, dispatch) {
-  if (state.message === '') return
-  try {
-    await DataStore.save(
-      new Chatty({
-        user: state.username,
-        message: state.message,
-        createdAt: new Date().toISOString(),
+  componentDidMount() {
+    this.getChats()
+
+    this.createChatListener = this.getUser().then(user => {
+      API.graphql(
+        graphqlOperation(onCreateChat, {
+          owner: user.username,
+        })
+      ).subscribe({
+        next: chatData => {
+          const newChat = chatData.value.data.onCreateChat
+          const prevChats = this.state.chats.filter(
+            chat => chat.id !== newChat.id
+          )
+          const updatedChats = [...prevChats, newChat]
+          this.setState({ chats: updatedChats })
+        },
+        error: error => {
+          console.warn(error)
+        },
       })
-    )
-    state.message = ''
-    getMessages(dispatch)
-  } catch (err) {
-    console.log('error creating message...', err)
-  }
-}
-
-function updater(value, inputValue, dispatch) {
-  dispatch({ type: 'updateInput', value, inputValue })
-}
-
-function Chat() {
-  const [state, dispatch] = useReducer(reducer, initialState)
-
-  useEffect(() => {
-    Auth.currentAuthenticatedUser().then(user => {
-      dispatch({ type: 'setUser', username: user.username })
     })
-    getMessages(dispatch)
-  }, [])
-  return (
-    <div className="app">
+
+    this.deleteChatListener = this.getUser().then(user => {
+      API.graphql(
+        graphqlOperation(onDeleteChat, { owner: user.username })
+      ).subscribe({
+        next: chatData => {
+          const deletedChat = chatData.value.data.onDeleteChat
+          const updatedChats = this.state.chats.filter(
+            chat => chat.id !== deletedChat.id
+          )
+          this.setState({ chats: updatedChats })
+        },
+      })
+    })
+
+    this.updateChatListener = this.getUser().then(user => {
+      API.graphql(
+        graphqlOperation(onUpdateChat, { owner: user.username })
+      ).subscribe({
+        next: chatData => {
+          const { chats } = this.state
+          const updatedChat = chatData.value.data.onUpdateChat
+          const index = chats.findIndex(chat => chat.id === updatedChat.id)
+          const updatedChats = [
+            ...chats.slice(0, index),
+            updatedChat,
+            ...chats.slice(index + 1),
+          ]
+          this.setState({ chats: updatedChats, chat: '', id: '' })
+        },
+      })
+    })
+  }
+
+  getChats = async () => {
+    const result = await API.graphql(graphqlOperation(listChats))
+    this.setState({ chats: result.data.listChats.items })
+  }
+
+  handleChangeChat = event => this.setState({ chat: event.target.value })
+
+  hasExistingChat = () => {
+    const { chats, id } = this.state
+    if (id) {
+      const isChat = chats.findIndex(chat => chat.id === id) > -1
+      return isChat
+    }
+    return false
+  }
+
+  handleUpdateChat = async () => {
+    const { id, chat } = this.state
+    const input = {
+      id,
+      chat,
+    }
+    await API.graphql(graphqlOperation(updateChat, { input }))
+  }
+
+  handleAddChat = async event => {
+    const { chat } = this.state
+    event.preventDefault()
+    if (this.hasExistingChat()) {
+      this.handleUpdateChat()
+    } else {
+      // check if we have an existing chat, if so, update it
+      const input = { chat }
+      await API.graphql(graphqlOperation(createChat, { input }))
+      // const newChat = result.data.createChat;
+      // const updatedChats = [newChat, ...chats];
+      this.setState({ chat: '' })
+    }
+  }
+
+  handleDeleteChat = async chatId => {
+    const input = { id: chatId }
+    await API.graphql(graphqlOperation(deleteChat, { input }))
+    // const deletedChatId = result.data.deleteChat.id;
+    // const updatedChats = chats.filter((chat) => chat.id !== deletedChatId);
+    // this.setState({ chats: updatedChats });
+  }
+
+  handleSetChat = ({ chat, id }) => this.setState({ chat, id })
+
+  render() {
+    const author = user.name
+    const { chats, chat, id } = this.state
+    return (
       <div>
-        <input
-          type="text"
-          placeholder="Enter your message..."
-          onChange={e => updater(e.target.value, 'message', dispatch)}
-          value={state.message}
-        />
-        <button onClick={() => createMessage(state, dispatch)}>
-          Create Message
-        </button>
-        {state.messages.map((message, index) => (
-          <div key={message.id}>
-            <div> {message.user}</div>
-            <div> {message.message}</div>
-            <div> {moment(message.createdAt).format('HH:mm:ss')}</div>
+        <div>
+          <h1>Chats</h1>
+          <p>ID: {author}</p>
+          <form onSubmit={this.handleAddChat}>
+            <input
+              type="text"
+              placeholder="Write your chat!"
+              onChange={this.handleChangeChat}
+              value={chat}
+            />
+            <button type="submit">{id ? 'Update Chat' : 'Add Chat'}</button>
+          </form>
+          <div>
+            {chats.map(item => (
+              <div key={item.id} className="flex items-center">
+                <li onClick={() => this.handleSetChat(item)} className="">
+                  {item.chat}
+                </li>
+                <button onClick={() => this.handleDeleteChat(item.id)}>
+                  <span>&times;</span>
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        <Link to="/app/home">Home</Link>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default Chat

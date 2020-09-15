@@ -195,7 +195,7 @@
                         {
                             "Ref": "APIKeyExpirationEpoch"
                         },
-                        1600787957
+                        1600808603
                     ]
                 }
             },
@@ -388,7 +388,7 @@
                 "NoneDataSource"
             ]
         },
-        "Chatty": {
+        "Chat": {
             "Type": "AWS::CloudFormation::Stack",
             "Properties": {
                 "Parameters": {
@@ -453,7 +453,7 @@
                                 "Ref": "S3DeploymentRootKey"
                             },
                             "stacks",
-                            "Chatty.json"
+                            "Chat.json"
                         ]
                     ]
                 }
@@ -508,7 +508,7 @@
                 "GraphQLSchema",
                 "Note",
                 "User",
-                "Chatty"
+                "Chat"
             ]
         }
     },

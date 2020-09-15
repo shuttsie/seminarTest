@@ -106,12 +106,11 @@ export const onDeleteUser = /* GraphQL */ `
     }
   }
 `;
-export const onCreateChatty = /* GraphQL */ `
-  subscription OnCreateChatty {
-    onCreateChatty {
+export const onCreateChat = /* GraphQL */ `
+  subscription OnCreateChat {
+    onCreateChat {
       id
-      user
-      message
+      chat
       createdAt
       _version
       _deleted
@@ -120,12 +119,11 @@ export const onCreateChatty = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateChatty = /* GraphQL */ `
-  subscription OnUpdateChatty {
-    onUpdateChatty {
+export const onUpdateChat = /* GraphQL */ `
+  subscription OnUpdateChat {
+    onUpdateChat {
       id
-      user
-      message
+      chat
       createdAt
       _version
       _deleted
@@ -134,12 +132,11 @@ export const onUpdateChatty = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteChatty = /* GraphQL */ `
-  subscription OnDeleteChatty {
-    onDeleteChatty {
+export const onDeleteChat = /* GraphQL */ `
+  subscription OnDeleteChat {
+    onDeleteChat {
       id
-      user
-      message
+      chat
       createdAt
       _version
       _deleted

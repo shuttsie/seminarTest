@@ -86,7 +86,7 @@
         }
     },
     "Resources": {
-        "ChattyTable": {
+        "ChatTable": {
             "Type": "AWS::DynamoDB::Table",
             "Properties": {
                 "TableName": {
@@ -96,7 +96,7 @@
                             "Fn::Join": [
                                 "-",
                                 [
-                                    "Chatty",
+                                    "Chat",
                                     {
                                         "Ref": "GetAttGraphQLAPIApiId"
                                     },
@@ -110,7 +110,7 @@
                             "Fn::Join": [
                                 "-",
                                 [
-                                    "Chatty",
+                                    "Chat",
                                     {
                                         "Ref": "GetAttGraphQLAPIApiId"
                                     }
@@ -186,7 +186,7 @@
             },
             "DeletionPolicy": "Delete"
         },
-        "ChattyIAMRole": {
+        "ChatIAMRole": {
             "Type": "AWS::IAM::Role",
             "Properties": {
                 "RoleName": {
@@ -196,7 +196,7 @@
                             "Fn::Join": [
                                 "-",
                                 [
-                                    "Chatty47d95b",
+                                    "Chat6f7b5f",
                                     "role",
                                     {
                                         "Ref": "GetAttGraphQLAPIApiId"
@@ -211,7 +211,7 @@
                             "Fn::Join": [
                                 "-",
                                 [
-                                    "Chatty571c65",
+                                    "Chat013b95",
                                     "role",
                                     {
                                         "Ref": "GetAttGraphQLAPIApiId"
@@ -263,7 +263,7 @@
                                                                 "Fn::Join": [
                                                                     "-",
                                                                     [
-                                                                        "Chatty",
+                                                                        "Chat",
                                                                         {
                                                                             "Ref": "GetAttGraphQLAPIApiId"
                                                                         },
@@ -277,7 +277,7 @@
                                                                 "Fn::Join": [
                                                                     "-",
                                                                     [
-                                                                        "Chatty",
+                                                                        "Chat",
                                                                         {
                                                                             "Ref": "GetAttGraphQLAPIApiId"
                                                                         }
@@ -300,7 +300,7 @@
                                                                 "Fn::Join": [
                                                                     "-",
                                                                     [
-                                                                        "Chatty",
+                                                                        "Chat",
                                                                         {
                                                                             "Ref": "GetAttGraphQLAPIApiId"
                                                                         },
@@ -314,7 +314,7 @@
                                                                 "Fn::Join": [
                                                                     "-",
                                                                     [
-                                                                        "Chatty",
+                                                                        "Chat",
                                                                         {
                                                                             "Ref": "GetAttGraphQLAPIApiId"
                                                                         }
@@ -408,17 +408,17 @@
                 ]
             }
         },
-        "ChattyDataSource": {
+        "ChatDataSource": {
             "Type": "AWS::AppSync::DataSource",
             "Properties": {
                 "ApiId": {
                     "Ref": "GetAttGraphQLAPIApiId"
                 },
-                "Name": "ChattyTable",
+                "Name": "ChatTable",
                 "Type": "AMAZON_DYNAMODB",
                 "ServiceRoleArn": {
                     "Fn::GetAtt": [
-                        "ChattyIAMRole",
+                        "ChatIAMRole",
                         "Arn"
                     ]
                 },
@@ -433,7 +433,7 @@
                                 "Fn::Join": [
                                     "-",
                                     [
-                                        "Chatty",
+                                        "Chat",
                                         {
                                             "Ref": "GetAttGraphQLAPIApiId"
                                         },
@@ -447,7 +447,7 @@
                                 "Fn::Join": [
                                     "-",
                                     [
-                                        "Chatty",
+                                        "Chat",
                                         {
                                             "Ref": "GetAttGraphQLAPIApiId"
                                         }
@@ -494,10 +494,10 @@
                 }
             },
             "DependsOn": [
-                "ChattyIAMRole"
+                "ChatIAMRole"
             ]
         },
-        "SyncChattyResolver": {
+        "SyncChatResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -505,11 +505,11 @@
                 },
                 "DataSourceName": {
                     "Fn::GetAtt": [
-                        "ChattyDataSource",
+                        "ChatDataSource",
                         "Name"
                     ]
                 },
-                "FieldName": "syncChatties",
+                "FieldName": "syncChats",
                 "TypeName": "Query",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -526,7 +526,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "syncChatties",
+                                        "syncChats",
                                         "req",
                                         "vtl"
                                     ]
@@ -550,7 +550,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "syncChatties",
+                                        "syncChats",
                                         "res",
                                         "vtl"
                                     ]
@@ -561,7 +561,7 @@
                 }
             }
         },
-        "GetChattyResolver": {
+        "GetChatResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -569,11 +569,11 @@
                 },
                 "DataSourceName": {
                     "Fn::GetAtt": [
-                        "ChattyDataSource",
+                        "ChatDataSource",
                         "Name"
                     ]
                 },
-                "FieldName": "getChatty",
+                "FieldName": "getChat",
                 "TypeName": "Query",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -590,7 +590,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "getChatty",
+                                        "getChat",
                                         "req",
                                         "vtl"
                                     ]
@@ -614,7 +614,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "getChatty",
+                                        "getChat",
                                         "res",
                                         "vtl"
                                     ]
@@ -625,7 +625,7 @@
                 }
             }
         },
-        "ListChattyResolver": {
+        "ListChatResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -633,11 +633,11 @@
                 },
                 "DataSourceName": {
                     "Fn::GetAtt": [
-                        "ChattyDataSource",
+                        "ChatDataSource",
                         "Name"
                     ]
                 },
-                "FieldName": "listChattys",
+                "FieldName": "listChats",
                 "TypeName": "Query",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -654,7 +654,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "listChattys",
+                                        "listChats",
                                         "req",
                                         "vtl"
                                     ]
@@ -678,7 +678,7 @@
                                     ".",
                                     [
                                         "Query",
-                                        "listChattys",
+                                        "listChats",
                                         "res",
                                         "vtl"
                                     ]
@@ -689,7 +689,7 @@
                 }
             }
         },
-        "CreateChattyResolver": {
+        "CreateChatResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -697,11 +697,11 @@
                 },
                 "DataSourceName": {
                     "Fn::GetAtt": [
-                        "ChattyDataSource",
+                        "ChatDataSource",
                         "Name"
                     ]
                 },
-                "FieldName": "createChatty",
+                "FieldName": "createChat",
                 "TypeName": "Mutation",
                 "SyncConfig": {
                     "ConflictDetection": "VERSION",
@@ -722,7 +722,7 @@
                                     ".",
                                     [
                                         "Mutation",
-                                        "createChatty",
+                                        "createChat",
                                         "req",
                                         "vtl"
                                     ]
@@ -746,7 +746,7 @@
                                     ".",
                                     [
                                         "Mutation",
-                                        "createChatty",
+                                        "createChat",
                                         "res",
                                         "vtl"
                                     ]
@@ -757,7 +757,7 @@
                 }
             }
         },
-        "UpdateChattyResolver": {
+        "UpdateChatResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -765,11 +765,11 @@
                 },
                 "DataSourceName": {
                     "Fn::GetAtt": [
-                        "ChattyDataSource",
+                        "ChatDataSource",
                         "Name"
                     ]
                 },
-                "FieldName": "updateChatty",
+                "FieldName": "updateChat",
                 "TypeName": "Mutation",
                 "SyncConfig": {
                     "ConflictDetection": "VERSION",
@@ -790,7 +790,7 @@
                                     ".",
                                     [
                                         "Mutation",
-                                        "updateChatty",
+                                        "updateChat",
                                         "req",
                                         "vtl"
                                     ]
@@ -814,7 +814,7 @@
                                     ".",
                                     [
                                         "Mutation",
-                                        "updateChatty",
+                                        "updateChat",
                                         "res",
                                         "vtl"
                                     ]
@@ -825,7 +825,7 @@
                 }
             }
         },
-        "DeleteChattyResolver": {
+        "DeleteChatResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -833,11 +833,11 @@
                 },
                 "DataSourceName": {
                     "Fn::GetAtt": [
-                        "ChattyDataSource",
+                        "ChatDataSource",
                         "Name"
                     ]
                 },
-                "FieldName": "deleteChatty",
+                "FieldName": "deleteChat",
                 "TypeName": "Mutation",
                 "SyncConfig": {
                     "ConflictDetection": "VERSION",
@@ -858,7 +858,7 @@
                                     ".",
                                     [
                                         "Mutation",
-                                        "deleteChatty",
+                                        "deleteChat",
                                         "req",
                                         "vtl"
                                     ]
@@ -882,7 +882,7 @@
                                     ".",
                                     [
                                         "Mutation",
-                                        "deleteChatty",
+                                        "deleteChat",
                                         "res",
                                         "vtl"
                                     ]
@@ -895,11 +895,11 @@
         }
     },
     "Outputs": {
-        "GetAttChattyTableStreamArn": {
+        "GetAttChatTableStreamArn": {
             "Description": "Your DynamoDB table StreamArn.",
             "Value": {
                 "Fn::GetAtt": [
-                    "ChattyTable",
+                    "ChatTable",
                     "StreamArn"
                 ]
             },
@@ -912,18 +912,18 @@
                                 "Ref": "AppSyncApiId"
                             },
                             "GetAtt",
-                            "ChattyTable",
+                            "ChatTable",
                             "StreamArn"
                         ]
                     ]
                 }
             }
         },
-        "GetAttChattyDataSourceName": {
+        "GetAttChatDataSourceName": {
             "Description": "Your model DataSource name.",
             "Value": {
                 "Fn::GetAtt": [
-                    "ChattyDataSource",
+                    "ChatDataSource",
                     "Name"
                 ]
             },
@@ -936,17 +936,17 @@
                                 "Ref": "AppSyncApiId"
                             },
                             "GetAtt",
-                            "ChattyDataSource",
+                            "ChatDataSource",
                             "Name"
                         ]
                     ]
                 }
             }
         },
-        "GetAttChattyTableName": {
+        "GetAttChatTableName": {
             "Description": "Your DynamoDB table name.",
             "Value": {
-                "Ref": "ChattyTable"
+                "Ref": "ChatTable"
             },
             "Export": {
                 "Name": {
@@ -957,7 +957,7 @@
                                 "Ref": "AppSyncApiId"
                             },
                             "GetAtt",
-                            "ChattyTable",
+                            "ChatTable",
                             "Name"
                         ]
                     ]

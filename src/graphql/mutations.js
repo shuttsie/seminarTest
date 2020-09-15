@@ -124,15 +124,14 @@ export const deleteUser = /* GraphQL */ `
     }
   }
 `;
-export const createChatty = /* GraphQL */ `
-  mutation CreateChatty(
-    $input: CreateChattyInput!
-    $condition: ModelChattyConditionInput
+export const createChat = /* GraphQL */ `
+  mutation CreateChat(
+    $input: CreateChatInput!
+    $condition: ModelChatConditionInput
   ) {
-    createChatty(input: $input, condition: $condition) {
+    createChat(input: $input, condition: $condition) {
       id
-      user
-      message
+      chat
       createdAt
       _version
       _deleted
@@ -141,15 +140,14 @@ export const createChatty = /* GraphQL */ `
     }
   }
 `;
-export const updateChatty = /* GraphQL */ `
-  mutation UpdateChatty(
-    $input: UpdateChattyInput!
-    $condition: ModelChattyConditionInput
+export const updateChat = /* GraphQL */ `
+  mutation UpdateChat(
+    $input: UpdateChatInput!
+    $condition: ModelChatConditionInput
   ) {
-    updateChatty(input: $input, condition: $condition) {
+    updateChat(input: $input, condition: $condition) {
       id
-      user
-      message
+      chat
       createdAt
       _version
       _deleted
@@ -158,15 +156,14 @@ export const updateChatty = /* GraphQL */ `
     }
   }
 `;
-export const deleteChatty = /* GraphQL */ `
-  mutation DeleteChatty(
-    $input: DeleteChattyInput!
-    $condition: ModelChattyConditionInput
+export const deleteChat = /* GraphQL */ `
+  mutation DeleteChat(
+    $input: DeleteChatInput!
+    $condition: ModelChatConditionInput
   ) {
-    deleteChatty(input: $input, condition: $condition) {
+    deleteChat(input: $input, condition: $condition) {
       id
-      user
-      message
+      chat
       createdAt
       _version
       _deleted

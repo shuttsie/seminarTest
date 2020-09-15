@@ -150,14 +150,14 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
-export const syncChatties = /* GraphQL */ `
-  query SyncChatties(
-    $filter: ModelChattyFilterInput
+export const syncChats = /* GraphQL */ `
+  query SyncChats(
+    $filter: ModelChatFilterInput
     $limit: Int
     $nextToken: String
     $lastSync: AWSTimestamp
   ) {
-    syncChatties(
+    syncChats(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
@@ -165,8 +165,7 @@ export const syncChatties = /* GraphQL */ `
     ) {
       items {
         id
-        user
-        message
+        chat
         createdAt
         _version
         _deleted
@@ -178,12 +177,11 @@ export const syncChatties = /* GraphQL */ `
     }
   }
 `;
-export const getChatty = /* GraphQL */ `
-  query GetChatty($id: ID!) {
-    getChatty(id: $id) {
+export const getChat = /* GraphQL */ `
+  query GetChat($id: ID!) {
+    getChat(id: $id) {
       id
-      user
-      message
+      chat
       createdAt
       _version
       _deleted
@@ -192,17 +190,16 @@ export const getChatty = /* GraphQL */ `
     }
   }
 `;
-export const listChattys = /* GraphQL */ `
-  query ListChattys(
-    $filter: ModelChattyFilterInput
+export const listChats = /* GraphQL */ `
+  query ListChats(
+    $filter: ModelChatFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listChattys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listChats(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        user
-        message
+        chat
         createdAt
         _version
         _deleted

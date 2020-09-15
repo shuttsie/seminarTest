@@ -16,9 +16,8 @@ type User @model {
   username: String
 }
 
-type Chatty @model {
+type Chat @model {
   id: ID!
-  user: String!
-  message: String!
+  chat: String!
   createdAt: AWSDateTime
 }

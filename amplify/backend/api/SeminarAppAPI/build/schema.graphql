@@ -27,10 +27,9 @@ type User {
   updatedAt: AWSDateTime!
 }
 
-type Chatty {
+type Chat {
   id: ID!
-  user: String!
-  message: String!
+  chat: String!
   createdAt: AWSDateTime
   _version: Int!
   _deleted: Boolean
@@ -150,9 +149,9 @@ type Query {
   syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection
   getUser(id: ID!): User
   listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
-  syncChatties(filter: ModelChattyFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelChattyConnection
-  getChatty(id: ID!): Chatty
-  listChattys(filter: ModelChattyFilterInput, limit: Int, nextToken: String): ModelChattyConnection
+  syncChats(filter: ModelChatFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelChatConnection
+  getChat(id: ID!): Chat
+  listChats(filter: ModelChatFilterInput, limit: Int, nextToken: String): ModelChatConnection
 }
 
 input CreateNoteInput {
@@ -179,9 +178,9 @@ type Mutation {
   createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
   updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
   deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
-  createChatty(input: CreateChattyInput!, condition: ModelChattyConditionInput): Chatty
-  updateChatty(input: UpdateChattyInput!, condition: ModelChattyConditionInput): Chatty
-  deleteChatty(input: DeleteChattyInput!, condition: ModelChattyConditionInput): Chatty
+  createChat(input: CreateChatInput!, condition: ModelChatConditionInput): Chat
+  updateChat(input: UpdateChatInput!, condition: ModelChatConditionInput): Chat
+  deleteChat(input: DeleteChatInput!, condition: ModelChatConditionInput): Chat
 }
 
 input ModelNoteConditionInput {
@@ -198,9 +197,9 @@ type Subscription {
   onCreateUser: User @aws_subscribe(mutations: ["createUser"])
   onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
   onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
-  onCreateChatty: Chatty @aws_subscribe(mutations: ["createChatty"])
-  onUpdateChatty: Chatty @aws_subscribe(mutations: ["updateChatty"])
-  onDeleteChatty: Chatty @aws_subscribe(mutations: ["deleteChatty"])
+  onCreateChat: Chat @aws_subscribe(mutations: ["createChat"])
+  onUpdateChat: Chat @aws_subscribe(mutations: ["updateChat"])
+  onDeleteChat: Chat @aws_subscribe(mutations: ["deleteChat"])
 }
 
 type ModelUserConnection {
@@ -273,48 +272,44 @@ input ModelUserConditionInput {
   not: ModelUserConditionInput
 }
 
-type ModelChattyConnection {
-  items: [Chatty]
+type ModelChatConnection {
+  items: [Chat]
   nextToken: String
   startedAt: AWSTimestamp
 }
 
-input ModelChattyFilterInput {
+input ModelChatFilterInput {
   id: ModelIDInput
-  user: ModelStringInput
-  message: ModelStringInput
+  chat: ModelStringInput
   createdAt: ModelStringInput
-  and: [ModelChattyFilterInput]
-  or: [ModelChattyFilterInput]
-  not: ModelChattyFilterInput
+  and: [ModelChatFilterInput]
+  or: [ModelChatFilterInput]
+  not: ModelChatFilterInput
 }
 
-input CreateChattyInput {
+input CreateChatInput {
   id: ID
-  user: String!
-  message: String!
+  chat: String!
   createdAt: AWSDateTime
   _version: Int
 }
 
-input UpdateChattyInput {
+input UpdateChatInput {
   id: ID!
-  user: String
-  message: String
+  chat: String
   createdAt: AWSDateTime
   _version: Int
 }
 
-input DeleteChattyInput {
+input DeleteChatInput {
   id: ID
   _version: Int
 }
 
-input ModelChattyConditionInput {
-  user: ModelStringInput
-  message: ModelStringInput
+input ModelChatConditionInput {
+  chat: ModelStringInput
   createdAt: ModelStringInput
-  and: [ModelChattyConditionInput]
-  or: [ModelChattyConditionInput]
-  not: ModelChattyConditionInput
+  and: [ModelChatConditionInput]
+  or: [ModelChatConditionInput]
+  not: ModelChatConditionInput
 }

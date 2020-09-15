@@ -149,7 +149,7 @@
 						]
 					},
 					"S3DeploymentBucket": "amplify-my-aws-project-master-225259-deployment",
-					"S3DeploymentRootKey": "amplify-appsync-files/f21db5b9474bf5b9907060c1e35e47c02c420795",
+					"S3DeploymentRootKey": "amplify-appsync-files/caf29fbb1c6784cf8b27c2ea76c7c8a6079af807",
 					"env": "master"
 				}
 			}
